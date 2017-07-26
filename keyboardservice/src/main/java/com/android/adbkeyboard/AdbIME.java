@@ -9,8 +9,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
+import android.widget.Button;
 
-public class AdbIME extends InputMethodService {
+public class AdbIME extends InputMethodService implements View.OnClickListener {
     private String IME_MESSAGE = "ADB_INPUT_TEXT";
     private String IME_CHARS = "ADB_INPUT_CHARS";
     private String IME_KEYCODE = "ADB_INPUT_CODE";
@@ -19,7 +20,9 @@ public class AdbIME extends InputMethodService {
 
     @Override 
     public View onCreateInputView() {
-    	View mInputView = getLayoutInflater().inflate(R.layout.view, null);
+//    	View mInputView = getLayoutInflater().inflate(R.layout.view, null);
+		View view = getLayoutInflater().inflate(R.layout.keyboard, null);
+		view.findViewById(R.id.button5).setOnClickListener(this);
 
         if (mReceiver == null) {
         	IntentFilter filter = new IntentFilter(IME_MESSAGE);
@@ -30,8 +33,15 @@ public class AdbIME extends InputMethodService {
         	registerReceiver(mReceiver, filter);
         }
 
-        return mInputView; 
-    } 
+        return view;
+    }
+
+	@Override
+	public void onClick(View v) {
+		if(v.getId() == R.id.button5){
+			hideWindow();
+		}
+	}
     
     public void onDestroy() {
     	if (mReceiver != null)
